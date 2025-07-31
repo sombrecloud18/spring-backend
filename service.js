@@ -1,6 +1,6 @@
-const { projects, admin } = require('./constants.js');
+import { projects, admin } from "./constants.js";
 
-exports.filterProjects = (searchTerm = '') => {
+export const filterProjects = (searchTerm = '') => {
   const term = searchTerm.toLowerCase();
   return projects.filter(
     project =>
@@ -9,7 +9,7 @@ exports.filterProjects = (searchTerm = '') => {
   );
 };
 
-exports.validateCredentials = (username, password) => {
+export const validateCredentials = (username, password) => {
   const isAdmin = username === admin.username && password === admin.password;
   return {
     success: isAdmin,
