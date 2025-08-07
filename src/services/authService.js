@@ -4,7 +4,7 @@ import * as authRepository from '../repositories/authRepository.js';
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 const ACCESS_TOKEN_EXPIRES_IN = '15m';
-const REFRESH_TOKEN_EXPIRES_IN = '7d';
+const REFRESH_TOKEN_EXPIRES_IN = '1d';
 
 export const validateCredentials = async (username, password) => {
   try {
@@ -13,7 +13,8 @@ export const validateCredentials = async (username, password) => {
     if (!user) {
       return {
         success: false,
-        message: 'Incorrect login or password'
+        message: 'Incorrect login or password',
+        showDuration: 5000,
       };
     }
 
@@ -63,6 +64,58 @@ export const refreshAccessToken = (refreshToken) => {
     return {
       success: false,
       message: 'Invalid refresh token'
+    };
+  }
+};
+
+export const registerUser = async (userData) => {
+  try {
+    const { username, password, repeatPassword, firstName, lastName, age } = userData;
+
+    const existingUser = await authRepository.findUserByUsername(username);
+    if (existingUser) {
+      return {
+        success: false,
+        message: 'Username already exists'
+      };
+    }
+
+    const user = await authRepository.createUser({
+      username,
+      password,
+      firstName,
+      lastName,
+      age
+    });
+
+    const accessToken = jwt.sign(
+      { userId: user.id, username: user.username },
+      ACCESS_TOKEN_SECRET,
+      { expiresIn: ACCESS_TOKEN_EXPIRES_IN }
+    );
+    const refreshToken = jwt.sign(
+      { userId: user.id },
+      REFRESH_TOKEN_SECRET,
+      { expiresIn: REFRESH_TOKEN_EXPIRES_IN }
+    );
+
+    return {
+      success: true,
+      accessToken,
+      refreshToken,
+      user: { 
+        id: user.id, 
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        age: user.age
+      }
+    };
+  } catch (error) {
+    console.error('Registration error:', error);
+    return {
+      success: false,
+      message: 'Registration failed'
     };
   }
 };
