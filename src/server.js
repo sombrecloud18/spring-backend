@@ -16,8 +16,8 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/login', authRouter); 
-app.use('/projects', projectsRouter);
+app.use('/', authRouter); 
+app.use('/', projectsRouter);
 
 app.use(globalErrorHandler);
 
