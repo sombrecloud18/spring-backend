@@ -38,10 +38,7 @@ export const validateCredentials = async (username, password) => {
     };
   } catch (error) {
     console.error('Error validating credentials:', error);
-    return {
-      success: false,
-      message: 'Authentication error'
-    };
+    throw error; 
   }
 };
 
@@ -61,10 +58,7 @@ export const refreshAccessToken = (refreshToken) => {
     };
   } catch (error) {
     console.error('Error refreshing token:', error);
-    return {
-      success: false,
-      message: 'Invalid refresh token'
-    };
+    throw error;
   }
 };
 

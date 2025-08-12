@@ -9,10 +9,17 @@ export const validateRequest = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const errorMap = errors.array().reduce((acc, err) => {
-      acc[err.param] = err.msg;
+      const fieldName = err.path;
+      if (fieldName) {
+        acc[fieldName] = err.msg;
+      }
       return acc;
     }, {});
-    return res.status(400).json({ success: false, errors: errorMap });
+    
+    return res.status(400).json({ 
+      success: false, 
+      errors: errorMap 
+    });
   }
   next();
 };

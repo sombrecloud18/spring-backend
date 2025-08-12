@@ -1,7 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import { router } from './routes.js'
+import { authRouter } from './controllers/auth-controller.js';
+import { projectsRouter } from './controllers/projects-controller.js';
 import { globalErrorHandler } from './error-middleware.js';
 
 const app = express();
@@ -15,7 +16,9 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/api', router);
+app.use('/login', authRouter); 
+app.use('/projects', projectsRouter);
+
 app.use(globalErrorHandler);
 
 app.listen(port, () => {
