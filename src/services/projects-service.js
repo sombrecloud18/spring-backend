@@ -1,4 +1,4 @@
-import * as projectsRepository from "../repositories/projectsRepository.js";
+import * as projectsRepository from "../repositories/projects-repository.js";
 
 export const filterProjects = async (searchTerm = '') => {
   try {

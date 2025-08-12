@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import * as authRepository from '../repositories/authRepository.js';
+import * as authRepository from '../repositories/auth-repository.js';
 
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
