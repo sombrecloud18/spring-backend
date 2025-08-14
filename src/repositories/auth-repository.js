@@ -1,13 +1,5 @@
 import { pool } from '../db.js';
 
-export const findUser = async (username, password) => {
-    const { rows } = await pool.query(
-      'SELECT user_id AS id, username FROM users WHERE username = $1 AND password = $2',
-      [username, password]
-    );
-    return rows[0] || null;
-};
-
 export const createUser = async (userData) => {
     const { username, password, firstName, lastName, age } = userData;
     const { rows } = await pool.query(
@@ -21,7 +13,7 @@ export const createUser = async (userData) => {
 
 export const findUserByUsername = async (username) => {
     const { rows } = await pool.query(
-      'SELECT user_id AS id, username FROM users WHERE username = $1',
+      'SELECT user_id AS id, username, password FROM users WHERE username = $1',
       [username]
     );
     return rows[0] || null;
